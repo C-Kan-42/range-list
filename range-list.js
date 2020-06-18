@@ -27,7 +27,7 @@
 
 class RangeList {
     constructor() {
-        this.rangelist = null;
+        this.rangeList = null;
     }
     /**
     * Adds a range to the list
@@ -36,14 +36,7 @@ class RangeList {
     */
     add(range) {
         // TODO: implement this
-        let firstNum = range[0];
-        let secondNum = range[1];
-        if (!this.rangelist) {
-            this.rangelist = `[${firstNum}, ${secondNum})`;
-        } else {
-
-        }
-
+        
 
     }
 
@@ -60,9 +53,21 @@ class RangeList {
     */
     print() {
         // TODO: implement this
-        if (this.rangelist) {
-            // console.log()`[${firstNum}, ${secondNum})`
-            console.log(this.rangelist)
+        if (this.rangeList) {
+        if (this.rangeList) {
+            let printArr = [];
+            var i, 
+                length = this.rangeList.length;
+                length = this.rangeList.length;
+
+            for ( i = 0; i < length; i++ ) {
+                if (i % 2 === 0) {
+                    printArr.push(`[${this.rangeList[i]},`);
+                } else {
+                    printArr.push(`${this.rangeList[i]})`)
+                }
+            }
+            console.log(printArr.join(" "));
         } else {
             console.log("Range list is undefined")
         }
@@ -70,24 +75,29 @@ class RangeList {
 }
 
 
-
 // Example run
+const rl = new RangeList();
 const rl = new RangeList();
 rl.add([1, 5]);
 rl.print();
 // Should display: [1, 5)
+
 rl.add([10, 20]);
 rl.print();
 // Should display: [1, 5) [10, 20)
+
 rl.add([20, 20]);
 rl.print();
 // Should display: [1, 5) [10, 20)
+
 rl.add([20, 21]);
 rl.print();
 // Should display: [1, 5) [10, 21)
+
 rl.add([2, 4]);
 rl.print();
 // Should display: [1, 5) [10, 21)
+
 rl.add([3, 8]);
 rl.print();
 // Should display: [1, 8) [10, 21)
@@ -95,12 +105,15 @@ rl.print();
 rl.remove([10, 10]);
 rl.print();
 // Should display: [1, 8) [10, 21)
+
 rl.remove([10, 11]);
 rl.print();
 // Should display: [1, 8) [11, 21)
+
 rl.remove([15, 17]);
 rl.print();
 // Should display: [1, 8) [11, 15) [17, 21)
+
 rl.remove([3, 19]);
 rl.print();
 // Should display: [1, 3) [19, 21)
