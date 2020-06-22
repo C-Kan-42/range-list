@@ -28,6 +28,8 @@
 class RangeList {
     constructor() {
         this.rangeList = null;
+        // Initialize as empty array instead?
+        // Rangelist will simply be a 1D array
     }
     /**
     * Adds a range to the list
@@ -36,7 +38,23 @@ class RangeList {
     */
     add(range) {
         // TODO: implement this
-        
+
+        // Case 1: rL is empty
+        if (!this.rangeList) {
+            this.rangeList = range;
+        } else {    // Case 2: rL is defined
+            let overlap = false;
+            var i,
+                length = this.rangeList.length;
+
+            while(i < length) {
+
+                i = i + 2;
+            }
+            // if () {  // New range has NO overlap with existing rL
+            
+            // }
+        }
 
     }
 
@@ -54,10 +72,8 @@ class RangeList {
     print() {
         // TODO: implement this
         if (this.rangeList) {
-        if (this.rangeList) {
             let printArr = [];
             var i, 
-                length = this.rangeList.length;
                 length = this.rangeList.length;
 
             for ( i = 0; i < length; i++ ) {
@@ -76,7 +92,6 @@ class RangeList {
 
 
 // Example run
-const rl = new RangeList();
 const rl = new RangeList();
 rl.add([1, 5]);
 rl.print();
