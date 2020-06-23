@@ -1,5 +1,5 @@
 // In this part of the interview process, we'd like you to come up with an algorithm to
-// solve the problem as described below.The problem itself is quite simple to solve.The
+// solve the problem as described below. The problem itself is quite simple to solve.The
 // solution needs to be in JavaScript.What we are mainly looking for in this test(other
 // than that the solution should work) is, how well you actually write the code.
 // We want to see how you write production - quality code in a team setting where
@@ -37,23 +37,61 @@ class RangeList {
     beginning and end of range.
     */
     add(range) {
-        // TODO: implement this
-
+        // Memoize range numbers
+        const rangeMin = range[0];
+        const rangeMax = range[1];
+        
         // Case 1: rL is empty
         if (!this.rangeList) {
             this.rangeList = range;
         } else {    // Case 2: rL is defined
-            let overlap = false;
-            var i,
-                length = this.rangeList.length;
+            // let overlap = false;
+            let i = 0;
+            let length = this.rangeList.length;
 
-            while(i < length) {
+            while (i < length) {
+                let currMin = this.rangeList[i];
+                let currMax = this.rangeList[i+1];
 
-                i = i + 2;
+                if (rangeMin < currMin) {
+                    if (rangeMax < currMin) { // new range has no overlap with rL
+                        this.rangeList.unshift(rangeMin, rangeMax);
+                        break;
+                    } else if (rangeMax <= currMax) { // new range has some overlap with rL
+                        this.rangeList[i] = rangeMin; // expand rL domain to the left
+                        break;
+                    } else if (rangeMax > currMax) { // expand rL in both directions
+                        this.rangeList[i] = rangeMin; 
+                        this.rangeList[i+1] = rangeMax; 
+                    }
+                } else if (rangeMin >= currMin && rangeMin < currMax) {
+                    if (rangeMax <= currMax) { // new range has no overlap with rL
+                        break;
+                    } else if (rangeMax > currMax) { // new range has some overlap with rL
+                        this.rangeList[i+1] = rangeMax; // expand rL domain to the left
+                        break;
+                    } else if (rangeMax > currMax) { // expand rL in both directions
+                        this.rangeList[i] = rangeMin;
+                        this.rangeList[i + 1] = rangeMax;
+                    }
+                } else if (rangeMin >= currMax && rangeMax >= currMax) {
+                
+                    if (i+1 === this.rangeList.length-1) { // only if we've reached the end of rL, should we take action
+                        if (rangeMin === currMax) {
+                            this.rangeList[i + 1] = rangeMax;
+                            break;
+                        } else if (rangeMin > currMax) {
+                            console.log('here')
+                            this.rangeList.push(rangeMin, rangeMax);
+                            break;
+                        }
+                    }
+                    
+                }
+
+                i = i + 2;  // analyzing by pairs of numbers
             }
-            // if () {  // New range has NO overlap with existing rL
-            
-            // }
+           
         }
 
     }
@@ -64,7 +102,7 @@ class RangeList {
     beginning and end of range.
     */
     remove(range) {
-        // TODO: implement this
+        
     }
     /**
     * Prints out the list of ranges in the range list
@@ -117,18 +155,18 @@ rl.add([3, 8]);
 rl.print();
 // Should display: [1, 8) [10, 21)
 
-rl.remove([10, 10]);
-rl.print();
-// Should display: [1, 8) [10, 21)
+// rl.remove([10, 10]);
+// rl.print();
+// // Should display: [1, 8) [10, 21)
 
-rl.remove([10, 11]);
-rl.print();
-// Should display: [1, 8) [11, 21)
+// rl.remove([10, 11]);
+// rl.print();
+// // Should display: [1, 8) [11, 21)
 
-rl.remove([15, 17]);
-rl.print();
-// Should display: [1, 8) [11, 15) [17, 21)
+// rl.remove([15, 17]);
+// rl.print();
+// // Should display: [1, 8) [11, 15) [17, 21)
 
-rl.remove([3, 19]);
-rl.print();
-// Should display: [1, 3) [19, 21)
+// rl.remove([3, 19]);
+// rl.print();
+// // Should display: [1, 3) [19, 21)
