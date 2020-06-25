@@ -73,6 +73,7 @@ class RangeList {
                     } else if (rangeMax > currMax) { // expand rL in both directions
                         this.rangeList[i] = rangeMin;
                         this.rangeList[i + 1] = rangeMax;
+                        break;
                     }
                 } else if (rangeMin >= currMax && rangeMax >= currMax) {
                 
@@ -102,7 +103,63 @@ class RangeList {
     beginning and end of range.
     */
     remove(range) {
-        
+        const rangeMin = range[0];
+        const rangeMax = range[1];
+
+        // Case 1: rL is empty
+        if (!this.rangeList) {
+            this.rangeList = range;
+        } else {    // Case 2: rL is defined
+            // let overlap = false;
+            let i = 0;
+            let length = this.rangeList.length;
+
+            while (i < length) {
+                let currMin = this.rangeList[i];
+                let currMax = this.rangeList[i + 1];
+
+                if (rangeMin < currMin) {
+                    if (rangeMax < currMin) { // new range has no overlap with rL
+                        this.rangeList.unshift(rangeMin, rangeMax);
+                        break;
+                    } else if (rangeMax <= currMax) { // new range has some overlap with rL
+                        this.rangeList[i] = rangeMin; // expand rL domain to the left
+                        break;
+                    } else if (rangeMax > currMax) { // expand rL in both directions
+                        this.rangeList[i] = rangeMin;
+                        this.rangeList[i + 1] = rangeMax;
+                    }
+                } else if (rangeMin >= currMin && rangeMin < currMax) {
+                    if (rangeMax <= currMax) { // new range has no overlap with rL
+                        break;
+                    } else if (rangeMax > currMax) { // new range has some overlap with rL
+                        this.rangeList[i + 1] = rangeMax; // expand rL domain to the left
+                        break;
+                    } else if (rangeMax > currMax) { // expand rL in both directions
+                        this.rangeList[i] = rangeMin;
+                        this.rangeList[i + 1] = rangeMax;
+                        break;
+                    }
+                } else if (rangeMin >= currMax && rangeMax >= currMax) {
+
+                    if (i + 1 === this.rangeList.length - 1) { // only if we've reached the end of rL, should we take action
+                        if (rangeMin === currMax) {
+                            this.rangeList[i + 1] = rangeMax;
+                            break;
+                        } else if (rangeMin > currMax) {
+                            console.log('here')
+                            this.rangeList.push(rangeMin, rangeMax);
+                            break;
+                        }
+                    }
+
+                }
+
+                i = i + 2;  // analyzing by pairs of numbers
+            }
+
+        }
+
     }
     /**
     * Prints out the list of ranges in the range list
